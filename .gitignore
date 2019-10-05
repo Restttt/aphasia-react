@@ -1,0 +1,3 @@
+*.env
+google-auth-aphasia.json
+/node_modules
