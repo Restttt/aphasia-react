@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@google-cloud/speech": "^3.3.0",
+    "@google-cloud/storage": "^3.3.1",
     "@material-ui/core": "^4.4.3",
     "@material-ui/styles": "^4.4.3",
     "axios": "^0.19.0",
@@ -15,12 +16,14 @@
     "fs": "0.0.1-security",
     "lodash": "^4.17.15",
     "massive": "^6.1.0",
+    "music-metadata": "^4.8.0",
     "nodemon": "^1.19.3",
     "react": "^16.10.1",
     "react-dom": "^16.10.1",
     "react-dropzone": "^10.1.9",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "3.1.2"
+    "react-scripts": "3.1.2",
+    "util": "^0.12.1"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -43,7 +46,7 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:3333",
+  "proxy": "http://localhost:3888",
   "devDependencies": {
     "eslint": "^6.5.1",
     "eslint-config-standard": "^14.1.0",

@@ -26,27 +26,6 @@ const App = () => {
       </Switch>
     </BrowserRouter>
   )
-    //     <Paper className={classes.root}>
-    //       {!loading ? (
-    //       <Typography variant="body2">
-    //         {response}
-    //       </Typography>
-    //       ) : (
-    //         <CircularProgress color="primary" />
-    //       )}
-    //     </Paper>
-    //         <Button
-    //         onClick={clearFile}
-    //         className={classes.button}
-    //       >
-    //         Clear
-    //       </Button>
-    //       </>
-
-    //     )}
-    //     </>
-    //   )}
-    // </>
 }
 
 export default withProvider(App);
