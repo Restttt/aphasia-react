@@ -4,7 +4,6 @@ const bcrypt = require('bcryptjs');
 const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload');
 const mm = require('music-metadata');
-const util = require('util');
 const fs = require('fs');
 const { Storage } = require('@google-cloud/storage');
 const path = require('path');
@@ -27,7 +26,7 @@ const storage = new Storage({
     projectId: PROJECT_ID,
 });
 
-const storeFile = (req, res, next) => {
+const storeFile = async (req, res, next) => {
     const { file } = req.files;
 
     if (!file.name.endsWith('wav')) {
@@ -36,8 +35,8 @@ const storeFile = (req, res, next) => {
     const fileName = `${file.name.replace(/ *\([^)]*\) */g, '').replace(/\s/g, '').split('.')[0]}`
     const location = `./files/${fileName}.wav`;
 
-    fs.writeFile(location, file.data, (err) => {
-        if (err) res.status(500).send('error writting file');
+    try {
+        await fs.writeFileSync(location, file.data);
         mm.parseFile(location, {native: true}).then(async metadata => {
                 req.file = {
                     name: file.name,
@@ -51,8 +50,10 @@ const storeFile = (req, res, next) => {
         }).catch(err => {
             res.status(500).send(err);
         })
-    });
-
+    } catch (e) {
+        console.log(e);
+        res.status(500).send(e);
+    }
 }
 
 const uploadFile = async (req, res, next) => {
