@@ -13,7 +13,7 @@ const { SERVER_PORT, CONNECTION_STRING, PROJECT_ID, BUCKET_NAME } = process.env;
 process.env.GOOGLE_APPLICATION_CREDENTIALS = './google-auth-aphasia.json';
 
 const app = express();
-// app.use( express.static( `${__dirname}/../build` ) );
+app.use( express.static( `${__dirname}/../build` ) );
 app.use(bodyParser.json());
 app.use(fileUpload());
 massive(CONNECTION_STRING).then(db => {
@@ -26,17 +26,17 @@ const storage = new Storage({
     projectId: PROJECT_ID,
 });
 
-const storeFile = async (req, res, next) => {
+const storeFile = (req, res, next) => {
     const { file } = req.files;
 
     if (!file.name.endsWith('wav')) {
         res.status(500).send('must be a wav file');
     }
     const fileName = `${file.name.replace(/ *\([^)]*\) */g, '').replace(/\s/g, '').split('.')[0]}`
-    const location = `./files/${fileName}.wav`;
+    const location = path.join(__dirname, `../files/${fileName}.wav`);
 
-    try {
-        await fs.writeFileSync(location, file.data);
+    fs.writeFile(location, file.data, (err) => {
+        if (err) res.status(500).send('error writting file');
         mm.parseFile(location, {native: true}).then(async metadata => {
                 req.file = {
                     name: file.name,
@@ -50,11 +50,10 @@ const storeFile = async (req, res, next) => {
         }).catch(err => {
             res.status(500).send(err);
         })
-    } catch (e) {
-        console.log(e);
-        res.status(500).send(e);
-    }
+    });
+
 }
+
 
 const uploadFile = async (req, res, next) => {
     try {
